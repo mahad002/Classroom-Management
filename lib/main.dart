@@ -1,5 +1,4 @@
 import 'package:chatizeck1/Screens/HomePage.dart';
-import 'package:flutter/services.dart';
 
 import 'globals.dart'; // Import the globals.dart file
 import 'package:flutter/material.dart';
