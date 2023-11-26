@@ -1,3 +1,5 @@
+import 'package:flutter/services.dart';
+
 import 'globals.dart'; // Import the globals.dart file
 import 'package:flutter/material.dart';
 
@@ -13,21 +15,21 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Create some sample data
-    Class classA = Class(name: 'Class A', subjects: []);
-    classA.subjects.add(Subject(name: 'Math', tests: []));
-    classA.subjects.add(Subject(name: 'Science', tests: []));
-    classA.subjects[0].tests.add(Test(name: 'Math Test 1', totalMarks: 100, students: []));
-    classA.subjects[1].tests.add(Test(name: 'Science Test 1', totalMarks: 100, students: []));
-    classA.subjects[1].tests[0].students.add(Student(name: 'John Doe', marksObtained: 85));
+    // Class classA = Class(name: 'Class A', subjects: []);
+    // classA.subjects.add(Subject(name: 'Math', tests: []));
+    // classA.subjects.add(Subject(name: 'Science', tests: []));
+    // classA.subjects[0].tests.add(Test(name: 'Math Test 1', totalMarks: 100, students: []));
+    // classA.subjects[1].tests.add(Test(name: 'Science Test 1', totalMarks: 100, students: []));
+    // classA.subjects[1].tests[0].students.add(Student(name: 'John Doe', marksObtained: 85));
 
-    Class classB = Class(name: 'Class B', subjects: []);
-    classB.subjects.add(Subject(name: 'English', tests: []));
-    classB.subjects.add(Subject(name: 'History', tests: []));
-    classB.subjects[0].tests.add(Test(name: 'English Test 1', totalMarks: 100, students: []));
-    classB.subjects[1].tests.add(Test(name: 'History Test 1', totalMarks: 100, students: []));
-    classB.subjects[0].tests[0].students.add(Student(name: 'Jane Smith', marksObtained: 92));
+    // Class classB = Class(name: 'Class B', subjects: []);
+    // classB.subjects.add(Subject(name: 'English', tests: []));
+    // classB.subjects.add(Subject(name: 'History', tests: []));
+    // classB.subjects[0].tests.add(Test(name: 'English Test 1', totalMarks: 100, students: []));
+    // classB.subjects[1].tests.add(Test(name: 'History Test 1', totalMarks: 100, students: []));
+    // classB.subjects[0].tests[0].students.add(Student(name: 'Jane Smith', marksObtained: 92));
 
-    GlobalData.classes = [classA, classB];
+    // GlobalData.classes = [classA, classB];
 
     return MaterialApp(
       title: 'Results App',
@@ -92,6 +94,11 @@ class _HomePageState extends State<HomePage> {
               },
               child: Text('Admin Login'),
             ),
+            SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () => SystemNavigator.pop(),
+              child: Text('Exit'),
+            ),
           ],
         ),
       ),
@@ -112,22 +119,25 @@ class AdminHomePage extends StatefulWidget {
 class _AdminHomePageState extends State<AdminHomePage> {
   @override
   Widget build(BuildContext context) {
+    void refresh() {
+      setState(() {});
+    }
     print(widget.classes);
     return Scaffold(
-      appBar: AppBar(
+      appBar: AppBar( 
         title: Text('Admin Page'),
       ),
       body: ListView.builder(
-        itemCount: widget.classes.length,
+        itemCount: GlobalData.classes.length,
         itemBuilder: (context, classIndex) {
-          String className = widget.classes[classIndex].name;
+          String className = GlobalData.classes[classIndex].name;
           return ListTile(
             title: Text(className),
             onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ClassPage(classIndex: classIndex),
+                  builder: (context) => ClassPage(classIndex: classIndex, onClassRemoved: refresh),
                 ),
               );
             },
@@ -142,7 +152,9 @@ class _AdminHomePageState extends State<AdminHomePage> {
               builder: (context) => CreateClassPage(
                 onClassCreated: (String className) {
                   setState(() {
+                    GlobalData.classes.add(Class(name: className, subjects: []));
                     widget.classes.add(Class(name: className, subjects: []));
+                    // widget.classes[] = GlobalData.classes[];
                     widget.onClassesUpdated(widget.classes);
                   });
                 },
@@ -218,14 +230,18 @@ class _CreateClassPageState extends State<CreateClassPage> {
 
 class ClassPage extends StatefulWidget {
   final int classIndex;
+  final VoidCallback onClassRemoved;
 
-  ClassPage({super.key, required this.classIndex});
+  ClassPage({super.key, required this.classIndex, required this.onClassRemoved});
 
   @override
   _ClassPageState createState() => _ClassPageState();
 }
 
 class _ClassPageState extends State<ClassPage> {
+  void refresh() {
+      setState(() {});
+  }
   @override
   Widget build(BuildContext context) {
     Class currentClass = GlobalData.classes[widget.classIndex];
@@ -233,6 +249,18 @@ class _ClassPageState extends State<ClassPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(currentClass.name),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.delete),
+            onPressed: () {
+              setState(() {
+                GlobalData.classes.removeAt(widget.classIndex);
+              });
+              widget.onClassRemoved();
+              Navigator.pop(context);
+            },
+          ),
+        ],
       ),
       body: ListView.builder(
         itemCount: currentClass.subjects.length,
@@ -256,6 +284,7 @@ class _ClassPageState extends State<ClassPage> {
                         ));
                       });
                     },
+                    onSubjectRemoved: refresh,
                   ),
                 ),
               );
@@ -351,11 +380,14 @@ class SubjectPage extends StatefulWidget {
   final int classIndex;
   final int subjectIndex;
   final Function(String) onTestCreated;
+  final VoidCallback onSubjectRemoved;
 
-  SubjectPage({super.key, 
+  SubjectPage({
+    super.key,
     required this.classIndex,
     required this.subjectIndex,
-    required this.onTestCreated,
+    required this.onTestCreated, 
+    required this.onSubjectRemoved,
   });
 
   @override
@@ -363,6 +395,9 @@ class SubjectPage extends StatefulWidget {
 }
 
 class _SubjectPageState extends State<SubjectPage> {
+   void refresh() {
+      setState(() {});
+  }
   @override
   Widget build(BuildContext context) {
     Class currentClass = GlobalData.classes[widget.classIndex];
@@ -395,7 +430,7 @@ class _SubjectPageState extends State<SubjectPage> {
                           ),
                         );
                       });
-                    },
+                    }, onTestRemoved: refresh,
                   ),
                 ),
               );
@@ -409,11 +444,11 @@ class _SubjectPageState extends State<SubjectPage> {
             context,
             MaterialPageRoute(
               builder: (context) => CreateTestPage(
-                onTestCreated: (String testName, int totalMarks) { // Updated
+                onTestCreated: (String testName, int totalMarks) {
                   setState(() {
                     currentSubject.tests.add(Test(
                       name: testName,
-                      totalMarks: totalMarks, // Updated
+                      totalMarks: totalMarks,
                       students: [],
                     ));
                   });
@@ -426,10 +461,21 @@ class _SubjectPageState extends State<SubjectPage> {
         },
         child: Icon(Icons.add),
       ),
+      persistentFooterButtons: [
+        ElevatedButton(
+          onPressed: () {
+            setState(() {
+              GlobalData.classes[widget.classIndex].subjects.removeAt(widget.subjectIndex);
+            });
+            widget.onSubjectRemoved();
+            Navigator.pop(context);
+          },
+          child: Text('Delete Subject'),
+        ),
+      ],
     );
   }
 }
-
 class CreateTestPage extends StatefulWidget {
   final Function(String, int) onTestCreated; // Updated
 
@@ -501,24 +547,36 @@ class TestPage extends StatefulWidget {
   final int subjectIndex;
   final int testIndex;
   final void Function(String) onStudentCreated;
+  final VoidCallback onTestRemoved;
 
   TestPage({super.key, 
     required this.classIndex,
     required this.subjectIndex,
     required this.testIndex,
-    required this.onStudentCreated,
+    required this.onStudentCreated, 
+    required this.onTestRemoved,
   });
 
   @override
   _TestPageState createState() => _TestPageState();
+  
 }
 
 class _TestPageState extends State<TestPage> {
+   void refresh() {
+      setState(() {});
+  }
   @override
   Widget build(BuildContext context) {
     Class currentClass = GlobalData.classes[widget.classIndex];
     Subject currentSubject = currentClass.subjects[widget.subjectIndex];
     Test currentTest = currentSubject.tests[widget.testIndex];
+
+    void removeTest() {
+      setState(() {
+        currentSubject.tests.removeAt(widget.testIndex);
+      });
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -530,6 +588,20 @@ class _TestPageState extends State<TestPage> {
           String studentName = currentTest.students[studentIndex].name;
           return ListTile(
             title: Text(studentName),
+            trailing: IconButton(
+            icon: Icon(Icons.delete),
+            onPressed: () {
+              setState(() {
+                currentTest.students.removeAt(studentIndex);
+                GlobalData.classes[widget.classIndex]
+                    .subjects[widget.subjectIndex]
+                    .tests[widget.testIndex]
+                    .students
+                    .removeAt(studentIndex);
+              });
+              refresh();
+            },
+          ),
             onTap: () {
               Navigator.push(
                 context,
@@ -539,6 +611,7 @@ class _TestPageState extends State<TestPage> {
                     subjectIndex: widget.subjectIndex,
                     testIndex: widget.testIndex,
                     studentIndex: studentIndex,
+                    onStudentRemoved: refresh,
                   ),
                 ),
               );
@@ -546,34 +619,66 @@ class _TestPageState extends State<TestPage> {
           );
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          String? studentName = await Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => CreateStudentPage(
-                classIndex: widget.classIndex,
-                subjectIndex: widget.subjectIndex,
-                testIndex: widget.testIndex,
-                onStudentCreated: (String studentName, int marks) {
-                  setState(() {
-                    currentTest.students.add(
-                      Student(
-                        name: studentName,
-                        marksObtained: marks,
-                      ),
-                    );
-                  });
-                },
-              ),
-            ),
-          );
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            onPressed: () async {
+              String? studentName = await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CreateStudentPage(
+                    classIndex: widget.classIndex,
+                    subjectIndex: widget.subjectIndex,
+                    testIndex: widget.testIndex,
+                    onStudentCreated: (String studentName, int marks) {
+                      setState(() {
+                        currentTest.students.add(
+                          Student(
+                            name: studentName,
+                            marksObtained: marks,
+                          ),
+                        );
+                      });
+                    },
+                  ),
+                ),
+              );
 
-          if (studentName != null) {
-            widget.onStudentCreated(studentName);
-          }
-        },
-        child: Icon(Icons.add),
+              if (studentName != null) {
+                widget.onStudentCreated(studentName);
+              }
+            },
+            child: Icon(Icons.add),
+          ),
+          SizedBox(height: 16),
+          FloatingActionButton(
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: Text('Remove Test'),
+                  content: Text('Are you sure you want to remove this test?'),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: Text('Cancel'),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        removeTest();
+                        widget.onTestRemoved();
+                        Navigator.pop(context);
+                      },
+                      child: Text('Remove'),
+                    ),
+                  ],
+                ),
+              );
+            },
+            child: Icon(Icons.delete),
+          ),
+        ],
       ),
     );
   }
@@ -682,12 +787,13 @@ class StudentPage extends StatefulWidget {
   final int subjectIndex;
   final int testIndex;
   final int studentIndex;
+  final VoidCallback onStudentRemoved;
 
   StudentPage({super.key, 
     required this.classIndex,
     required this.subjectIndex,
     required this.testIndex,
-    required this.studentIndex,
+    required this.studentIndex, required this.onStudentRemoved,
   });
 
   @override
@@ -750,6 +856,7 @@ class _StudentPageState extends State<StudentPage> {
                           actions: [
                             ElevatedButton(
                               onPressed: () {
+                                widget.onStudentRemoved();
                                 Navigator.pop(context);
                               },
                               child: Text('OK'),
@@ -782,15 +889,14 @@ class UserPage extends StatefulWidget {
 class _UserPageState extends State<UserPage> {
   @override
   Widget build(BuildContext context) {
-    print(widget.classes[0].subjects.length);
     return Scaffold(
       appBar: AppBar(
         title: Text('User Page'),
       ),
       body: ListView.builder(
-        itemCount: widget.classes.length,
+        itemCount: GlobalData.classes.length,
         itemBuilder: (context, classIndex) {
-          String className = widget.classes[classIndex].name;
+          String className = GlobalData.classes[classIndex].name;
           return ListTile(
             title: Text(className),
             onTap: () {
