@@ -15,21 +15,87 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Create some sample data
-    // Class classA = Class(name: 'Class A', subjects: []);
-    // classA.subjects.add(Subject(name: 'Math', tests: []));
-    // classA.subjects.add(Subject(name: 'Science', tests: []));
-    // classA.subjects[0].tests.add(Test(name: 'Math Test 1', totalMarks: 100, students: []));
-    // classA.subjects[1].tests.add(Test(name: 'Science Test 1', totalMarks: 100, students: []));
-    // classA.subjects[1].tests[0].students.add(Student(name: 'John Doe', marksObtained: 85));
+    Class classA = Class(name: 'Class A', subjects: []);
+    classA.subjects.add(Subject(name: 'Math', tests: []));
+    classA.subjects.add(Subject(name: 'Science', tests: []));
+    classA.subjects.add(Subject(name: 'English', tests: []));
+    classA.subjects.add(Subject(name: 'History', tests: []));
 
-    // Class classB = Class(name: 'Class B', subjects: []);
-    // classB.subjects.add(Subject(name: 'English', tests: []));
-    // classB.subjects.add(Subject(name: 'History', tests: []));
-    // classB.subjects[0].tests.add(Test(name: 'English Test 1', totalMarks: 100, students: []));
-    // classB.subjects[1].tests.add(Test(name: 'History Test 1', totalMarks: 100, students: []));
-    // classB.subjects[0].tests[0].students.add(Student(name: 'Jane Smith', marksObtained: 92));
+    for (int i = 0; i < classA.subjects.length; i++) {
+      for (int j = 0; j < 5; j++) {
+        classA.subjects[i].tests.add(Test(name: 'Test ${j + 1}', totalMarks: 100, students: []));
+      }
+    }
 
-    // GlobalData.classes = [classA, classB];
+    for (int i = 0; i < classA.subjects.length; i++) {
+      for (int j = 0; j < classA.subjects[i].tests.length; j++) {
+        for (int k = 0; k < 20; k++) {
+          classA.subjects[i].tests[j].students.add(Student(name: 'Student ${k + 1}', marksObtained: 0));
+        }
+      }
+    }
+
+    Class classB = Class(name: 'Class B', subjects: []);
+    classB.subjects.add(Subject(name: 'Math', tests: []));
+    classB.subjects.add(Subject(name: 'Science', tests: []));
+    classB.subjects.add(Subject(name: 'English', tests: []));
+    classB.subjects.add(Subject(name: 'History', tests: []));
+
+    for (int i = 0; i < classB.subjects.length; i++) {
+      for (int j = 0; j < 5; j++) {
+        classB.subjects[i].tests.add(Test(name: 'Test ${j + 1}', totalMarks: 100, students: []));
+      }
+    }
+
+    for (int i = 0; i < classB.subjects.length; i++) {
+      for (int j = 0; j < classB.subjects[i].tests.length; j++) {
+        for (int k = 0; k < 20; k++) {
+          classB.subjects[i].tests[j].students.add(Student(name: 'Student ${k + 1}', marksObtained: 0));
+        }
+      }
+    }
+
+    Class classC = Class(name: 'Class C', subjects: []);
+    classC.subjects.add(Subject(name: 'Math', tests: []));
+    classC.subjects.add(Subject(name: 'Science', tests: []));
+    classC.subjects.add(Subject(name: 'English', tests: []));
+    classC.subjects.add(Subject(name: 'History', tests: []));
+
+    for (int i = 0; i < classC.subjects.length; i++) {
+      for (int j = 0; j < 5; j++) {
+        classC.subjects[i].tests.add(Test(name: 'Test ${j + 1}', totalMarks: 100, students: []));
+      }
+    }
+
+    for (int i = 0; i < classC.subjects.length; i++) {
+      for (int j = 0; j < classC.subjects[i].tests.length; j++) {
+        for (int k = 0; k < 20; k++) {
+          classC.subjects[i].tests[j].students.add(Student(name: 'Student ${k + 1}', marksObtained: 0));
+        }
+      }
+    }
+
+    Class classD = Class(name: 'Class D', subjects: []);
+    classD.subjects.add(Subject(name: 'Math', tests: []));
+    classD.subjects.add(Subject(name: 'Science', tests: []));
+    classD.subjects.add(Subject(name: 'English', tests: []));
+    classD.subjects.add(Subject(name: 'History', tests: []));
+
+    for (int i = 0; i < classD.subjects.length; i++) {
+      for (int j = 0; j < 5; j++) {
+        classD.subjects[i].tests.add(Test(name: 'Test ${j + 1}', totalMarks: 100, students: []));
+      }
+    }
+
+    for (int i = 0; i < classD.subjects.length; i++) {
+      for (int j = 0; j < classD.subjects[i].tests.length; j++) {
+        for (int k = 0; k < 20; k++) {
+          classD.subjects[i].tests[j].students.add(Student(name: 'Student ${k + 1}', marksObtained: 0));
+        }
+      }
+    }
+
+    GlobalData.classes = [classA, classB, classC, classD];
 
     return MaterialApp(
       title: 'Results App',
@@ -126,15 +192,15 @@ class _HomePageState extends State<HomePage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => AdminHomePage(
-                        classes: classes,
-                        onClassesUpdated: (updatedClasses) {
-                          setState(() {
-                            classes = updatedClasses;
-                          });
-                        }, reload: refresh,
-                      ),
+                    builder: (context) => AdminHomePage(
+                      classes: classes,
+                      onClassesUpdated: (updatedClasses) {
+                        setState(() {
+                          classes = updatedClasses;
+                        });
+                      }, reload: refresh,
                     ),
+                  ),
                   );
                 } else {
                   showDialog(
@@ -204,27 +270,36 @@ class _AdminHomePageState extends State<AdminHomePage> {
       appBar: AppBar( 
         title: Text('Admin Page'),
         leading: IconButton(
-        icon: Icon(Icons.arrow_back),
-        onPressed: () {
-          widget.reload();
-          Navigator.pop(context);
-        },
-      ),
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            widget.reload();
+            Navigator.pop(context);
+          },
+        ),
+        backgroundColor: Colors.blue,
       ),
       body: ListView.builder(
         itemCount: GlobalData.classes.length,
         itemBuilder: (context, classIndex) {
           String className = GlobalData.classes[classIndex].name;
-          return ListTile(
-            title: Text(className),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ClassPage(classIndex: classIndex, onClassRemoved: refresh),
-                ),
-              );
-            },
+          return Container(
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.black),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            margin: EdgeInsets.all(8),
+            padding: EdgeInsets.all(2),
+            child: ListTile(
+              title: Text(className),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ClassPage(classIndex: classIndex, onClassRemoved: refresh),
+                  ),
+                );
+              },
+            ),
           );
         },
       ),
@@ -245,8 +320,6 @@ class _AdminHomePageState extends State<AdminHomePage> {
               ),
             ),
           );
-
-          // No need to check className for null, as it's handled in CreateClassPage
         },
         child: Icon(Icons.add),
       ),
@@ -271,41 +344,44 @@ class _CreateClassPageState extends State<CreateClassPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Create Class'),
+        backgroundColor: Colors.blue,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: classController,
-              decoration: InputDecoration(labelText: 'Enter Class Name'),
-            ),
-            SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
-                String className = classController.text.trim();
-                if (className.isNotEmpty) {
-                  widget.onClassCreated(className);
-                  Navigator.pop(context);
-                } else {
-                  showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: Text('Error'),
-                      content: Text('Class name is required.'),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.pop(context),
-                          child: Text('OK'),
-                        ),
-                      ],
-                    ),
-                  );
-                }
-              },
-              child: Text('Create Class'),
-            ),
-          ],
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              TextField(
+                controller: classController,
+                decoration: InputDecoration(labelText: 'Enter Class Name'),
+              ),
+              SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () {
+                  String className = classController.text.trim();
+                  if (className.isNotEmpty) {
+                    widget.onClassCreated(className);
+                    Navigator.pop(context);
+                  } else {
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: Text('Error'),
+                        content: Text('Class name is required.'),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: Text('OK'),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                },
+                child: Text('Create Class'),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -313,19 +389,20 @@ class _CreateClassPageState extends State<CreateClassPage> {
 }
 
 class ClassPage extends StatefulWidget {
-  final int classIndex;
-  final VoidCallback onClassRemoved;
+          final int classIndex;
+          final VoidCallback onClassRemoved;
 
-  ClassPage({super.key, required this.classIndex, required this.onClassRemoved});
+          ClassPage({super.key, required this.classIndex, required this.onClassRemoved});
 
-  @override
-  _ClassPageState createState() => _ClassPageState();
-}
+          @override
+          _ClassPageState createState() => _ClassPageState();
+        }
 
 class _ClassPageState extends State<ClassPage> {
   void refresh() {
-      setState(() {});
+    setState(() {});
   }
+
   @override
   Widget build(BuildContext context) {
     Class currentClass = GlobalData.classes[widget.classIndex];
@@ -333,6 +410,7 @@ class _ClassPageState extends State<ClassPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(currentClass.name),
+        backgroundColor: Colors.blue,
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.delete),
@@ -346,35 +424,46 @@ class _ClassPageState extends State<ClassPage> {
           ),
         ],
       ),
-      body: ListView.builder(
-        itemCount: currentClass.subjects.length,
-        itemBuilder: (context, subjectIndex) {
-          String subjectName = currentClass.subjects[subjectIndex].name;
-          return ListTile(
-            title: Text(subjectName),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => SubjectPage(
-                    classIndex: widget.classIndex,
-                    subjectIndex: subjectIndex,
-                    onTestCreated: (String testName) {
-                      setState(() {
-                        currentClass.subjects[subjectIndex].tests.add(Test(
-                          name: testName,
-                          totalMarks: 100, // Set your default value
-                          students: [],
-                        ));
-                      });
-                    },
-                    onSubjectRemoved: refresh,
-                  ),
-                ),
-              );
-            },
-          );
-        },
+      body: SingleChildScrollView(
+        child: ListView.builder(
+          shrinkWrap: true,
+          itemCount: currentClass.subjects.length,
+          itemBuilder: (context, subjectIndex) {
+            String subjectName = currentClass.subjects[subjectIndex].name;
+            return Container(
+              margin: EdgeInsets.all(8.0),
+              padding: EdgeInsets.all(2.0),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey),
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              child: ListTile(
+                title: Text(subjectName),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SubjectPage(
+                        classIndex: widget.classIndex,
+                        subjectIndex: subjectIndex,
+                        onTestCreated: (String testName) {
+                          setState(() {
+                            currentClass.subjects[subjectIndex].tests.add(Test(
+                              name: testName,
+                              totalMarks: 100, // Set your default value
+                              students: [],
+                            ));
+                          });
+                        },
+                        onSubjectRemoved: refresh,
+                      ),
+                    ),
+                  );
+                },
+              ),
+            );
+          },
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
@@ -401,87 +490,90 @@ class _ClassPageState extends State<ClassPage> {
     );
   }
 }
-
 class CreateSubjectPage extends StatefulWidget {
-  final Function(String) onSubjectCreated;
+          final Function(String) onSubjectCreated;
 
-  CreateSubjectPage({super.key, required this.onSubjectCreated});
+          CreateSubjectPage({super.key, required this.onSubjectCreated});
 
-  @override
-  _CreateSubjectPageState createState() => _CreateSubjectPageState();
-}
+          @override
+          _CreateSubjectPageState createState() => _CreateSubjectPageState();
+        }
 
 class _CreateSubjectPageState extends State<CreateSubjectPage> {
-  TextEditingController subjectController = TextEditingController();
+          TextEditingController subjectController = TextEditingController();
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Create Subject'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: subjectController,
-              decoration: InputDecoration(labelText: 'Enter Subject'),
-            ),
-            SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
-                String subjectName = subjectController.text.trim();
-                if (subjectName.isNotEmpty) {
-                  widget.onSubjectCreated(subjectName);
-                  Navigator.pop(context);
-                } else {
-                  showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: Text('Error'),
-                      content: Text('Subject name is required.'),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.pop(context),
-                          child: Text('OK'),
-                        ),
-                      ],
-                    ),
-                  );
-                }
-              },
-              child: Text('Create Subject'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
+          @override
+          Widget build(BuildContext context) {
+            return Scaffold(
+              appBar: AppBar(
+                title: Text('Create Subject'),
+                backgroundColor: Colors.blue,
+              ),
+              body: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    children: [
+                      TextField(
+                        controller: subjectController,
+                        decoration: InputDecoration(labelText: 'Enter Subject'),
+                      ),
+                      SizedBox(height: 16),
+                      ElevatedButton(
+                        onPressed: () {
+                          String subjectName = subjectController.text.trim();
+                          if (subjectName.isNotEmpty) {
+                            widget.onSubjectCreated(subjectName);
+                            Navigator.pop(context);
+                          } else {
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: Text('Error'),
+                                content: Text('Subject name is required.'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(context),
+                                    child: Text('OK'),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }
+                        },
+                        child: Text('Create Subject'),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          }
+        }
 
 class SubjectPage extends StatefulWidget {
-  final int classIndex;
-  final int subjectIndex;
-  final Function(String) onTestCreated;
-  final VoidCallback onSubjectRemoved;
+          final int classIndex;
+          final int subjectIndex;
+          final Function(String) onTestCreated;
+          final VoidCallback onSubjectRemoved;
 
-  SubjectPage({
-    super.key,
-    required this.classIndex,
-    required this.subjectIndex,
-    required this.onTestCreated, 
-    required this.onSubjectRemoved,
-  });
+          SubjectPage({
+            super.key,
+            required this.classIndex,
+            required this.subjectIndex,
+            required this.onTestCreated, 
+            required this.onSubjectRemoved,
+          });
 
-  @override
-  _SubjectPageState createState() => _SubjectPageState();
-}
+          @override
+          _SubjectPageState createState() => _SubjectPageState();
+        }
 
 class _SubjectPageState extends State<SubjectPage> {
-   void refresh() {
-      setState(() {});
+  void refresh() {
+    setState(() {});
   }
+
   @override
   Widget build(BuildContext context) {
     Class currentClass = GlobalData.classes[widget.classIndex];
@@ -490,37 +582,50 @@ class _SubjectPageState extends State<SubjectPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(currentSubject.name),
+        backgroundColor: Colors.blue,
       ),
-      body: ListView.builder(
-        itemCount: currentSubject.tests.length,
-        itemBuilder: (context, testIndex) {
-          String testName = currentSubject.tests[testIndex].name;
-          return ListTile(
-            title: Text(testName),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => TestPage(
-                    classIndex: widget.classIndex,
-                    subjectIndex: widget.subjectIndex,
-                    testIndex: testIndex,
-                    onStudentCreated: (String studentName) {
-                      setState(() {
-                        currentSubject.tests[testIndex].students.add(
-                          Student(
-                            name: studentName,
-                            marksObtained: 0, // Set your default value
-                          ),
-                        );
-                      });
-                    }, onTestRemoved: refresh,
-                  ),
-                ),
-              );
-            },
-          );
-        },
+      body: SingleChildScrollView(
+        child: ListView.builder(
+          shrinkWrap: true,
+          itemCount: currentSubject.tests.length,
+          itemBuilder: (context, testIndex) {
+            String testName = currentSubject.tests[testIndex].name;
+            return Container(
+              margin: EdgeInsets.all(8.0),
+              padding: EdgeInsets.all(2.0),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey),
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              child: ListTile(
+                title: Text(testName),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => TestPage(
+                        classIndex: widget.classIndex,
+                        subjectIndex: widget.subjectIndex,
+                        testIndex: testIndex,
+                        onStudentCreated: (String studentName) {
+                          setState(() {
+                            currentSubject.tests[testIndex].students.add(
+                              Student(
+                                name: studentName,
+                                marksObtained: 0, // Set your default value
+                              ),
+                            );
+                          });
+                        },
+                        onTestRemoved: refresh,
+                      ),
+                    ),
+                  );
+                },
+              ),
+            );
+          },
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
@@ -560,71 +665,75 @@ class _SubjectPageState extends State<SubjectPage> {
     );
   }
 }
+
 class CreateTestPage extends StatefulWidget {
-  final Function(String, int) onTestCreated; // Updated
+          final Function(String, int) onTestCreated; // Updated
 
-  CreateTestPage({super.key, required this.onTestCreated});
+          CreateTestPage({super.key, required this.onTestCreated});
 
-  @override
-  _CreateTestPageState createState() => _CreateTestPageState();
-}
+          @override
+          _CreateTestPageState createState() => _CreateTestPageState();
+        }
 
 class _CreateTestPageState extends State<CreateTestPage> {
-  TextEditingController testNameController = TextEditingController();
-  TextEditingController totalMarksController = TextEditingController();
+          TextEditingController testNameController = TextEditingController();
+          TextEditingController totalMarksController = TextEditingController();
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Create Test'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: testNameController,
-              decoration: InputDecoration(labelText: 'Enter Test Name'),
-            ),
-            SizedBox(height: 16),
-            TextField(
-              controller: totalMarksController,
-              decoration: InputDecoration(labelText: 'Enter Total Marks'),
-              keyboardType: TextInputType.number,
-            ),
-            SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
-                String testName = testNameController.text.trim();
-                String totalMarks = totalMarksController.text.trim();
-                if (testName.isNotEmpty && totalMarks.isNotEmpty) {
-                  widget.onTestCreated(testName, int.parse(totalMarks)); // Updated
-                  Navigator.pop(context);
-                } else {
-                  showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: Text('Error'),
-                      content: Text('Both fields are required.'),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.pop(context),
-                          child: Text('OK'),
-                        ),
-                      ],
-                    ),
-                  );
-                }
-              },
-              child: Text('Create Test'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
+          @override
+          Widget build(BuildContext context) {
+            return Scaffold(
+              appBar: AppBar(
+                title: Text('Create Test'),
+                backgroundColor: Colors.blue,
+              ),
+              body: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    children: [
+                      TextField(
+                        controller: testNameController,
+                        decoration: InputDecoration(labelText: 'Enter Test Name'),
+                      ),
+                      SizedBox(height: 16),
+                      TextField(
+                        controller: totalMarksController,
+                        decoration: InputDecoration(labelText: 'Enter Total Marks'),
+                        keyboardType: TextInputType.number,
+                      ),
+                      SizedBox(height: 16),
+                      ElevatedButton(
+                        onPressed: () {
+                          String testName = testNameController.text.trim();
+                          String totalMarks = totalMarksController.text.trim();
+                          if (testName.isNotEmpty && totalMarks.isNotEmpty) {
+                            widget.onTestCreated(testName, int.parse(totalMarks)); // Updated
+                            Navigator.pop(context);
+                          } else {
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: Text('Error'),
+                                content: Text('Both fields are required.'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(context),
+                                    child: Text('OK'),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }
+                        },
+                        child: Text('Create Test'),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          }
+        }
 
 class TestPage extends StatefulWidget {
   final int classIndex;
@@ -637,19 +746,20 @@ class TestPage extends StatefulWidget {
     required this.classIndex,
     required this.subjectIndex,
     required this.testIndex,
-    required this.onStudentCreated, 
+    required this.onStudentCreated,
     required this.onTestRemoved,
-  });
+    });
 
-  @override
-  _TestPageState createState() => _TestPageState();
-  
-}
+    @override
+    _TestPageState createState() => _TestPageState();
+
+    }
 
 class _TestPageState extends State<TestPage> {
-   void refresh() {
-      setState(() {});
+  void refresh() {
+    setState(() {});
   }
+
   @override
   Widget build(BuildContext context) {
     Class currentClass = GlobalData.classes[widget.classIndex];
@@ -665,45 +775,70 @@ class _TestPageState extends State<TestPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(currentTest.name),
+        backgroundColor: Colors.blue,
       ),
-      body: ListView.builder(
-        itemCount: currentTest.students.length,
-        itemBuilder: (context, studentIndex) {
-          String studentName = currentTest.students[studentIndex].name;
-          return ListTile(
-            title: Text(studentName),
-            trailing: IconButton(
-            icon: Icon(Icons.delete),
-            onPressed: () {
-              refresh();
-              setState(() {
-                currentTest.students.removeAt(studentIndex);
-                GlobalData.classes[widget.classIndex]
-                    .subjects[widget.subjectIndex]
-                    .tests[widget.testIndex]
-                    .students
-                    .removeAt(studentIndex);
-                refresh();
-              });
-              refresh();
-            },
-          ),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => StudentPage(
-                    classIndex: widget.classIndex,
-                    subjectIndex: widget.subjectIndex,
-                    testIndex: widget.testIndex,
-                    studentIndex: studentIndex,
-                    onStudentRemoved: refresh,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            ListView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: currentTest.students.length,
+              itemBuilder: (context, studentIndex) {
+                String studentName = currentTest.students[studentIndex].name;
+                return Container(
+                  margin: EdgeInsets.all(8.0),
+                  padding: EdgeInsets.all(2.0),
+                  child: ListTile(
+                    title: Text(studentName),
+                    trailing: IconButton(
+                      icon: Icon(Icons.delete),
+                      onPressed: () {
+                        refresh();
+                        setState(() {
+                          currentTest.students.removeAt(studentIndex);
+                          GlobalData.classes[widget.classIndex]
+                              .subjects[widget.subjectIndex]
+                              .tests[widget.testIndex]
+                              .students
+                              .removeAt(studentIndex);
+                          refresh();
+                        });
+                        refresh();
+                      },
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => StudentPage(
+                            classIndex: widget.classIndex,
+                            subjectIndex: widget.subjectIndex,
+                            testIndex: widget.testIndex,
+                            studentIndex: studentIndex,
+                            onStudentRemoved: refresh,
+                          ),
+                        ),
+                      );
+                    },
+                    // BEGIN: 2a3b4c5d6e7f
+                    tileColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      side: BorderSide(
+                        color: Colors.grey,
+                        width: 1,
+                      ),
+                    ),
+                    hoverColor: Colors.grey.withOpacity(0.5),
+                    contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                    // END: 2a3b4c5d6e7f
                   ),
-                ),
-              );
-            },
-          );
-        },
+                );
+              },
+            ),
+          ],
+        ),
       ),
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -771,198 +906,212 @@ class _TestPageState extends State<TestPage> {
 }
 
 class CreateStudentPage extends StatefulWidget {
-  final int classIndex;
-  final int subjectIndex;
-  final int testIndex;
-  final void Function(String, int) onStudentCreated;
+      final int classIndex;
+      final int subjectIndex;
+      final int testIndex;
+      final void Function(String, int) onStudentCreated;
 
-  CreateStudentPage({super.key, 
-    required this.classIndex,
-    required this.subjectIndex,
-    required this.testIndex,
-    required this.onStudentCreated,
-  });
+      CreateStudentPage({
+        super.key,
+        required this.classIndex,
+        required this.subjectIndex,
+        required this.testIndex,
+        required this.onStudentCreated,
+      });
 
-  @override
-  _CreateStudentPageState createState() => _CreateStudentPageState();
-}
+      @override
+      _CreateStudentPageState createState() => _CreateStudentPageState();
+    }
 
 class _CreateStudentPageState extends State<CreateStudentPage> {
-  TextEditingController studentNameController = TextEditingController();
-  TextEditingController marksController = TextEditingController();
+      TextEditingController studentNameController = TextEditingController();
+      TextEditingController marksController = TextEditingController();
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Add Student'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: studentNameController,
-              decoration: InputDecoration(labelText: 'Enter Student Name'),
-            ),
-            SizedBox(height: 16),
-            TextField(
-              controller: marksController,
-              decoration: InputDecoration(labelText: 'Enter Marks'),
-              keyboardType: TextInputType.number,
-            ),
-            SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
-                String studentName = studentNameController.text.trim();
-                String marksText = marksController.text.trim();
+      @override
+      Widget build(BuildContext context) {
+        return Scaffold(
+          appBar: AppBar(
+            title: Text('Add Student'),
+            backgroundColor: Colors.blue,
+          ),
+          body: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: [
+                  TextField(
+                    controller: studentNameController,
+                    decoration: InputDecoration(labelText: 'Enter Student Name'),
+                  ),
+                  SizedBox(height: 16),
+                  TextField(
+                    controller: marksController,
+                    decoration: InputDecoration(labelText: 'Enter Marks'),
+                    keyboardType: TextInputType.number,
+                  ),
+                  SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: () {
+                      String studentName = studentNameController.text.trim();
+                      String marksText = marksController.text.trim();
 
-                if (studentName.isNotEmpty && marksText.isNotEmpty) {
-                  int marks = int.parse(marksText);
+                      if (studentName.isNotEmpty && marksText.isNotEmpty) {
+                        int marks = int.parse(marksText);
 
-                  // Check if marks are within the total marks range
-                  if (marks >= 0 && marks <= GlobalData.classes[widget.classIndex]
-                      .subjects[widget.subjectIndex]
-                      .tests[widget.testIndex]
-                      .totalMarks) {
-                    widget.onStudentCreated(studentName, marks);
-                    Navigator.pop(context);
-                  } else {
-                    showDialog(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                        title: Text('Error'),
-                        content: Text('Invalid marks. Marks should be between 0 and '
-                            '${GlobalData.classes[widget.classIndex].subjects[widget.subjectIndex].tests[widget.testIndex].totalMarks}.'),
-                        actions: [
-                          TextButton(
-                            onPressed: () => Navigator.pop(context),
-                            child: Text('OK'),
+                        // Check if marks are within the total marks range
+                        if (marks >= 0 &&
+                            marks <=
+                                GlobalData.classes[widget.classIndex]
+                                    .subjects[widget.subjectIndex]
+                                    .tests[widget.testIndex]
+                                    .totalMarks) {
+                          widget.onStudentCreated(studentName, marks);
+                          Navigator.pop(context);
+                        } else {
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: Text('Error'),
+                              content: Text(
+                                  'Invalid marks. Marks should be between 0 and '
+                                  '${GlobalData.classes[widget.classIndex].subjects[widget.subjectIndex].tests[widget.testIndex].totalMarks}.'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context),
+                                  child: Text('OK'),
+                                ),
+                              ],
+                            ),
+                          );
+                        }
+                      } else {
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: Text('Error'),
+                            content: Text('Both fields are required.'),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.pop(context),
+                                child: Text('OK'),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                    );
-                  }
-                } else {
-                  showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: Text('Error'),
-                      content: Text('Both fields are required.'),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.pop(context),
-                          child: Text('OK'),
-                        ),
-                      ],
-                    ),
-                  );
-                }
-              },
-              child: Text('Add Student'),
+                        );
+                      }
+                    },
+                    child: Text('Add Student'),
+                  ),
+                ],
+              ),
             ),
-          ],
-        ),
-      ),
-    );
-  }
-}
+          ),
+        );
+      }
+    }
 
 class StudentPage extends StatefulWidget {
-  final int classIndex;
-  final int subjectIndex;
-  final int testIndex;
-  final int studentIndex;
-  final VoidCallback onStudentRemoved;
+      final int classIndex;
+      final int subjectIndex;
+      final int testIndex;
+      final int studentIndex;
+      final VoidCallback onStudentRemoved;
 
-  StudentPage({super.key, 
-    required this.classIndex,
-    required this.subjectIndex,
-    required this.testIndex,
-    required this.studentIndex, required this.onStudentRemoved,
-  });
+      StudentPage({
+        super.key,
+        required this.classIndex,
+        required this.subjectIndex,
+        required this.testIndex,
+        required this.studentIndex,
+        required this.onStudentRemoved,
+      });
 
-  @override
-  _StudentPageState createState() => _StudentPageState();
-}
+      @override
+      _StudentPageState createState() => _StudentPageState();
+    }
 
 class _StudentPageState extends State<StudentPage> {
-  TextEditingController marksController = TextEditingController();
+      TextEditingController marksController = TextEditingController();
 
-  @override
-  Widget build(BuildContext context) {
-    Class currentClass = GlobalData.classes[widget.classIndex];
-    Subject currentSubject = currentClass.subjects[widget.subjectIndex];
-    Test currentTest = currentSubject.tests[widget.testIndex];
-    Student currentStudent = currentTest.students[widget.studentIndex];
+      @override
+      Widget build(BuildContext context) {
+        Class currentClass = GlobalData.classes[widget.classIndex];
+        Subject currentSubject = currentClass.subjects[widget.subjectIndex];
+        Test currentTest = currentSubject.tests[widget.testIndex];
+        Student currentStudent = currentTest.students[widget.studentIndex];
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Student Details'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Student: ${currentStudent.name}',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        return Scaffold(
+          appBar: AppBar(
+            title: Text('Student Details'),
+            backgroundColor: Colors.blue,
+          ),
+          body: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Student: ${currentStudent.name}',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 16),
+                  Text(
+                    'Marks Obtained: ${currentStudent.marksObtained}',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  SizedBox(height: 16),
+                  TextField(
+                    controller: marksController,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(labelText: 'Enter Marks'),
+                  ),
+                  SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: () {
+                      String marks = marksController.text.trim();
+                      if (marks.isNotEmpty) {
+                        int marksObtained = int.parse(marks);
+                        // Add a check for valid marks
+                        if (marksObtained >= 0 &&
+                            marksObtained <= currentTest.totalMarks) {
+                          setState(() {
+                            currentStudent.marksObtained = marksObtained;
+                          });
+                        } else {
+                          // Show an error message or handle invalid marks
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: Text('Invalid Marks'),
+                                content: Text(
+                                    'Marks should be between 0 and ${currentTest.totalMarks}.'),
+                                actions: [
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      widget.onStudentRemoved();
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text('OK'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        }
+                      }
+                    },
+                    child: Text('Save Marks'),
+                  ),
+                ],
+              ),
             ),
-            SizedBox(height: 16),
-            Text(
-              'Marks Obtained: ${currentStudent.marksObtained}',
-              style: TextStyle(fontSize: 16),
-            ),
-            SizedBox(height: 16),
-            TextField(
-              controller: marksController,
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(labelText: 'Enter Marks'),
-            ),
-            SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
-                String marks = marksController.text.trim();
-                if (marks.isNotEmpty) {
-                  int marksObtained = int.parse(marks);
-                  // Add a check for valid marks
-                  if (marksObtained >= 0 && marksObtained <= currentTest.totalMarks) {
-                    setState(() {
-                      currentStudent.marksObtained = marksObtained;
-                    });
-                  } else {
-                    // Show an error message or handle invalid marks
-                    showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                          title: Text('Invalid Marks'),
-                          content: Text('Marks should be between 0 and ${currentTest.totalMarks}.'),
-                          actions: [
-                            ElevatedButton(
-                              onPressed: () {
-                                widget.onStudentRemoved();
-                                Navigator.pop(context);
-                              },
-                              child: Text('OK'),
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  }
-                }
-              },
-              child: Text('Save Marks'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
+          ),
+        );
+      }
+    }
+  
 class UserPage extends StatefulWidget {
   final List<Class> classes;
 
@@ -978,25 +1127,48 @@ class _UserPageState extends State<UserPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('User Page'),
+        backgroundColor: Colors.blue,
       ),
-      body: ListView.builder(
-        itemCount: GlobalData.classes.length,
-        itemBuilder: (context, classIndex) {
-          String className = GlobalData.classes[classIndex].name;
-          return ListTile(
-            title: Text(className),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ReadOnlySubjectPage(
-                    classIndex: classIndex
+      body: SingleChildScrollView(
+        child: ListView.builder(
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          itemCount: GlobalData.classes.length,
+          itemBuilder: (context, classIndex) {
+            String className = GlobalData.classes[classIndex].name;
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              child: Column(
+                children: [
+                   //SizedBox(height: 16),
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: const Color.fromARGB(255, 6, 16, 24),
+                        width: 1.0,
+                      ),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: ListTile(
+                      title: Text(className),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ReadOnlySubjectPage(
+                              classIndex: classIndex,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
                   ),
-                ),
-              );
-            },
-          );
-        },
+                  // SizedBox(height: 16), // Add a SizedBox after each ListTile
+                ],
+              ),
+            );
+          },
+        ),
       ),
     );
   }
@@ -1005,9 +1177,7 @@ class _UserPageState extends State<UserPage> {
 class ReadOnlySubjectPage extends StatefulWidget {
   final int classIndex;
 
-  ReadOnlySubjectPage({super.key, 
-    required this.classIndex,
-  });
+  ReadOnlySubjectPage({super.key, required this.classIndex});
 
   @override
   _ReadOnlySubjectPageState createState() => _ReadOnlySubjectPageState();
@@ -1019,27 +1189,51 @@ class _ReadOnlySubjectPageState extends State<ReadOnlySubjectPage> {
     print(GlobalData.classes);
     return Scaffold(
       appBar: AppBar(
-        title: Text(GlobalData.classes[widget.classIndex].name),
+        title: Text(
+          GlobalData.classes[widget.classIndex].name,
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.blue,
       ),
-      body: ListView.builder(
-        itemCount: GlobalData.classes[widget.classIndex].subjects.length,
-        itemBuilder: (context, subjectIndex) {
-          String subjectName = GlobalData.classes[widget.classIndex].subjects[subjectIndex].name;
-          return ListTile(
-            title: Text(subjectName),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ReadOnlyTestsPage(
-                    classIndex: widget.classIndex,
-                    subjectIndex: subjectIndex,
+      body: SingleChildScrollView(
+        child: ListView.builder(
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          itemCount: GlobalData.classes[widget.classIndex].subjects.length,
+          itemBuilder: (context, subjectIndex) {
+            String subjectName =
+                GlobalData.classes[widget.classIndex].subjects[subjectIndex].name;
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Colors.grey,
+                    width: 1.0,
                   ),
+                  borderRadius: BorderRadius.circular(10),
                 ),
-              );
-            },
-          );
-        },
+                child: ListTile(
+                  title: Text(
+                    subjectName,
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ReadOnlyTestsPage(
+                          classIndex: widget.classIndex,
+                          subjectIndex: subjectIndex,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            );
+          },
+        ),
       ),
     );
   }
@@ -1049,10 +1243,7 @@ class ReadOnlyTestsPage extends StatefulWidget {
   final int classIndex;
   final int subjectIndex;
 
-  ReadOnlyTestsPage({super.key, 
-    required this.classIndex,
-    required this.subjectIndex,
-  });
+  ReadOnlyTestsPage({super.key, required this.classIndex, required this.subjectIndex});
 
   @override
   _ReadOnlyTestsPageState createState() => _ReadOnlyTestsPageState();
@@ -1063,28 +1254,55 @@ class _ReadOnlyTestsPageState extends State<ReadOnlyTestsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(GlobalData.classes[widget.classIndex].subjects[widget.subjectIndex].name),
+        title: Text(
+          GlobalData.classes[widget.classIndex].subjects[widget.subjectIndex].name,
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.blue,
       ),
-      body: ListView.builder(
-        itemCount: GlobalData.classes[widget.classIndex].subjects[widget.subjectIndex].tests.length,
-        itemBuilder: (context, testIndex) {
-          String testName = GlobalData.classes[widget.classIndex].subjects[widget.subjectIndex].tests[testIndex].name;
-          return ListTile(
-            title: Text(testName),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ReadOnlyEnterMarksPage(
-                    classIndex: widget.classIndex,
-                    subjectIndex: widget.subjectIndex,
-                    testIndex: testIndex,
+      body: SingleChildScrollView(
+        child: ListView.builder(
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          itemCount: GlobalData.classes[widget.classIndex].subjects[widget.subjectIndex].tests.length,
+          itemBuilder: (context, testIndex) {
+            String testName =
+                GlobalData.classes[widget.classIndex].subjects[widget.subjectIndex].tests[testIndex].name;
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Colors.grey,
+                    width: 1.0,
                   ),
+                  borderRadius: BorderRadius.circular(10),
                 ),
-              );
-            },
-          );
-        },
+                child: ListTile(
+                  title: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      testName,
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  ),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ReadOnlyEnterMarksPage(
+                          classIndex: widget.classIndex,
+                          subjectIndex: widget.subjectIndex,
+                          testIndex: testIndex,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            );
+          },
+        ),
       ),
     );
   }
@@ -1095,11 +1313,7 @@ class ReadOnlyEnterMarksPage extends StatefulWidget {
   final int subjectIndex;
   final int testIndex;
 
-  ReadOnlyEnterMarksPage({super.key, 
-    required this.classIndex,
-    required this.subjectIndex,
-    required this.testIndex,
-  });
+  ReadOnlyEnterMarksPage({super.key, required this.classIndex, required this.subjectIndex, required this.testIndex});
 
   @override
   _ReadOnlyEnterMarksPageState createState() => _ReadOnlyEnterMarksPageState();
@@ -1120,50 +1334,76 @@ class _ReadOnlyEnterMarksPageState extends State<ReadOnlyEnterMarksPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Marks Details'),
+        title: Text(
+          'Marks Details',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.blue,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Test: ${selectedTest.name}',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 16),
-            Text(
-              'Students and Marks:',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 8),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: DataTable(
-                columns: [
-                  DataColumn(label: Text('Student Name')),
-                  DataColumn(label: Text('Obtained Marks')),
-                  DataColumn(label: Text('Out of Marks')),
-                ],
-                rows: students.map((student) {
-                  return DataRow(cells: [
-                    DataCell(Text(student.name)),
-                    DataCell(Text(student.marksObtained.toString())),
-                    DataCell(Text(selectedTest.totalMarks.toString())),
-                  ]);
-                }).toList(),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Test: ${selectedTest.name}',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-            ),
-            SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Text('Back'),
-            ),
-          ],
+              SizedBox(height: 16),
+              Text(
+                'Students and Marks:',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 8),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.grey,
+                      width: 1.0,
+                    ),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  padding: EdgeInsets.all(8.0),
+                  margin: EdgeInsets.symmetric(vertical: 8.0),
+                  child: DataTable(
+                    columns: [
+                      DataColumn(label: Text('Student Name')),
+                      DataColumn(label: Text('Obtained Marks')),
+                      DataColumn(label: Text('Out of Marks')),
+                    ],
+                    rows: students.map((student) {
+                      return DataRow(cells: [
+                        DataCell(Text(student.name)),
+                        DataCell(Text(student.marksObtained.toString())),
+                        DataCell(Text(selectedTest.totalMarks.toString())),
+                      ]);
+                    }).toList(),
+                  ),
+                ),
+              ),
+              SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('Back'),
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.blue,
+                  onPrimary: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  side: BorderSide(color: Colors.blue, width: 2),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 }
+
