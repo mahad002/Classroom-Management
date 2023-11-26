@@ -51,9 +51,17 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<Class> classes = [];
+  TextEditingController nameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    void refresh() {
+      setState(() {
+        nameController.text = '';
+        passwordController.text = '';
+      });
+    }
     return Scaffold(
       appBar: AppBar(
         title: Text('Results App'),
@@ -62,6 +70,93 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: Column(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                        color: Colors.grey,
+                        width: 1.0,
+                      ),
+                    ),
+                    child: TextField(
+                      controller: nameController,
+                      decoration: InputDecoration(
+                        labelText: 'Name',
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 16),
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                        color: Colors.grey,
+                        width: 1.0,
+                      ),
+                    ),
+                    child: TextField(
+                      controller: passwordController,
+                      obscureText: true,
+                      decoration: InputDecoration(
+                        labelText: 'Password',
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 16),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: Color.fromARGB(255, 94, 160, 236), // Change the color to your desired color
+              ),
+              onPressed: () {
+                String name = nameController.text.trim();
+                String password = passwordController.text.trim();
+
+                if (name == 'Admin' && password == 'Admin123') {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AdminHomePage(
+                        classes: classes,
+                        onClassesUpdated: (updatedClasses) {
+                          setState(() {
+                            classes = updatedClasses;
+                          });
+                        }, reload: refresh,
+                      ),
+                    ),
+                  );
+                } else {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: Text('Not an admin'),
+                      content: Text('You are not an admin. Please select the User button to continue as a user.'),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: Text('OK'),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+              },
+              child: Text('Admin Login'),
+            ),
+            SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
@@ -74,25 +169,6 @@ class _HomePageState extends State<HomePage> {
                 );
               },
               child: Text('Check Results'),
-            ),
-            SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () async {
-                await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AdminHomePage(
-                      classes: classes,
-                      onClassesUpdated: (updatedClasses) {
-                        setState(() {
-                          classes = updatedClasses;
-                        });
-                      },
-                    ),
-                  ),
-                );
-              },
-              child: Text('Admin Login'),
             ),
             SizedBox(height: 16),
             ElevatedButton(
@@ -109,8 +185,9 @@ class _HomePageState extends State<HomePage> {
 class AdminHomePage extends StatefulWidget {
   final List<Class> classes;
   final void Function(List<Class>) onClassesUpdated;
+  final VoidCallback reload;
 
-  AdminHomePage({super.key, required this.classes, required this.onClassesUpdated});
+  AdminHomePage({super.key, required this.classes, required this.onClassesUpdated, required this.reload});
 
   @override
   _AdminHomePageState createState() => _AdminHomePageState();
@@ -126,6 +203,13 @@ class _AdminHomePageState extends State<AdminHomePage> {
     return Scaffold(
       appBar: AppBar( 
         title: Text('Admin Page'),
+        leading: IconButton(
+        icon: Icon(Icons.arrow_back),
+        onPressed: () {
+          widget.reload();
+          Navigator.pop(context);
+        },
+      ),
       ),
       body: ListView.builder(
         itemCount: GlobalData.classes.length,
@@ -591,6 +675,7 @@ class _TestPageState extends State<TestPage> {
             trailing: IconButton(
             icon: Icon(Icons.delete),
             onPressed: () {
+              refresh();
               setState(() {
                 currentTest.students.removeAt(studentIndex);
                 GlobalData.classes[widget.classIndex]
@@ -598,6 +683,7 @@ class _TestPageState extends State<TestPage> {
                     .tests[widget.testIndex]
                     .students
                     .removeAt(studentIndex);
+                refresh();
               });
               refresh();
             },
